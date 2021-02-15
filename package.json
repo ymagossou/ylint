@@ -27,7 +27,7 @@
 			"properties": {
 				"ylint.executablePath": {
 					"type": "string",
-					"default": "ylint",
+					"default": "/usr/local/bin/oclint-json-compilation-database",
 					"description": "Path to oclint executable"
 				},
 				"ylint.configurationPath": {
