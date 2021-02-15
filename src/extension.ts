@@ -14,11 +14,21 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const updateDiagnostics = (document: vscode.TextDocument) => {
 		linter.run(document);
-	  };
+	};
+
+	context.subscriptions.push(
+		vscode.workspace.onDidCloseTextDocument(document => {
+			linter.clear(document);
+		})
+	);
+
+	context.subscriptions.push(
+		vscode.workspace.onDidOpenTextDocument(updateDiagnostics)
+	);
 	
-	  context.subscriptions.push(
+	context.subscriptions.push(
 		vscode.workspace.onDidSaveTextDocument(updateDiagnostics)
-	  );
+	);
 }
 
 // this method is called when your extension is deactivated

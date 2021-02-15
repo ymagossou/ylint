@@ -1,6 +1,6 @@
 import * as execa from "execa";
-import { commandSync } from "execa";
 import * as fs from "fs";
+import { listeners } from "process";
 import {
   Diagnostic,
   DiagnosticCollection,
@@ -12,7 +12,7 @@ import {
   Position
 } from "vscode";
 
-const REGEX = /.+?:(\d+) \[(W|E)] (\w+): (.+)/g;
+const REGEX = /.+?:(\d+):(\d+):(\W+)(.+)\[(.+)\](.+)/g;
 
 export default class Linter {
   private collection: DiagnosticCollection = languages.createDiagnosticCollection(
@@ -52,34 +52,38 @@ export default class Linter {
 
   
   private async lint(document: TextDocument) {
-    var workSpace;
-    var command;
+    let workSpace;
 
     const executablePath = workspace.getConfiguration("ylint")
       .executablePath;
     let configurationPath = workspace.getConfiguration("ylint")
     .configurationPath;
 
-    if (configurationPath === ".ylint.yml" && workspace.workspaceFolders) {
+    if (configurationPath === ".ylint" && workspace.workspaceFolders) {
       configurationPath =
         workspace.workspaceFolders[0].uri.fsPath + "/" + configurationPath;
       workSpace = workspace.workspaceFolders[0].uri.fsPath + " ";
     }
+
+    let command = executablePath + ' -p ' + workSpace + ' -- ' + document.fileName + ' ';
+
     if (fs.existsSync(configurationPath)) {
-      //TODO
+      fs.readFileSync(configurationPath, 'utf-8').split(/\r?\n/).forEach(function(line) {
+        console.log(line);
+        command = command + line + ' ';
+      })
     } else {
       console.warn(`${configurationPath} path does not exist! ylint extension using default settings`)
-      command = executablePath + ' -p ' + workSpace + '-- -max-priority-3=100 --rule=VariableNamingCheck -extra-arg=-Wno-error -extra-arg=-I/usr/lib/clang/9.0.1/include ' + document.fileName;
     }
 
-    var child = require('child_process').exec(command);
+    let child = require('child_process').exec(command);
     child.stdout.on('data', (data: any) => {
-	    console.log(data);
-      //this.collection.set(document.uri, this.parse('stdout', data));
+      this.collection.set(document.uri, this.parse(data, document));
 	  });
   }
 
   private parse(output: string, document: TextDocument): Diagnostic[] {
+
     const diagnostics = [];
 
     let match = REGEX.exec(output);
@@ -89,8 +93,8 @@ export default class Linter {
           ? DiagnosticSeverity.Warning
           : DiagnosticSeverity.Error;
       const line = Math.max(Number.parseInt(match[1], 10) - 1, 0);
-      const ruleName = match[3];
-      const message = match[4];
+      const ruleName = match[4] + match[5];
+      const message = match[6];
       const lineText = document.lineAt(line);
       const lineTextRange = lineText.range;
       const range = new Range(
