@@ -1,0 +1,14 @@
+[
+ {
+  "directory": "/home/magossou/Documents/YVON/ylint/test_project",
+  "arguments": [
+   "gcc",
+   "-c",
+   "-o",
+   "test.o",
+   "test.c",
+   "-I."
+  ],
+  "file": "test.c"
+ }
+]
