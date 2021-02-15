@@ -32,7 +32,7 @@
 				},
 				"ylint.configurationPath": {
 					"type": "string",
-					"default": ".ylint.yml",
+					"default": ".ylint",
 					"description": "Path to ylint configuration file"
 				}
 			}
