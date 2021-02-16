@@ -65,11 +65,10 @@ export default class Linter {
       workSpace = workspace.workspaceFolders[0].uri.fsPath + " ";
     }
 
-    let command = executablePath + ' -p ' + workSpace + ' -- ' + document.fileName + ' ';
+    let command = executablePath + ' -p ' + workSpace + ' -i ' + document.fileName + ' ';
 
     if (fs.existsSync(configurationPath)) {
       fs.readFileSync(configurationPath, 'utf-8').split(/\r?\n/).forEach(function(line) {
-        console.log(line);
         command = command + line + ' ';
       })
     } else {
