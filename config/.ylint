@@ -1,0 +1,19 @@
+-e WICED
+-e wiced_common_fw/libraries
+-e build -e SEGGER
+-e libraries/maple_sirup 
+-e libraries/ppi 
+-e libraries/cifra 
+-e libraries/app_objects 
+-e libraries/tinycbor 
+-e libraries/cryptoauthlib 
+-e drivers/atecc 
+-e drivers/lis2dh 
+-e drivers/pca9531 
+-e drivers/mp26029 
+-- 
+--max-priority-3=100 
+--rule=VariableNamingCheck 
+--extra-arg=-Wno-error 
+--extra-arg=-DLWIP_TIMEVAL_PRIVATE 
+--extra-arg=-I/usr/lib/clang/9.0.1/include
