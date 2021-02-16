@@ -10,5 +10,5 @@
     "typescript.tsc.autoDetect": "off",
     
     "ylint.executablePath": "/usr/local/bin/oclint-json-compilation-database",
-    "ylint.configurationPath": ".config"
+    "ylint.configurationPath": ".ylint"
 }
