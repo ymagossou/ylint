@@ -3,12 +3,19 @@
 	"publisher": "magossou",
 	"displayName": "ylint",
 	"description": "C/C++ code lint checking using oclint",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.52.0"
 	},
 	"categories": [
 		"Linters"
+	],
+	"keywords": [
+	"c",
+	"c++",
+	"oclint",
+	"lint",
+	"linter"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -50,8 +57,18 @@
 		"typescript": "^4.1.2",
 		"vscode-test": "^1.4.1"
 	},
+	"license": "MIT",
+	"bugs": {
+	"url": "https://github.com/ymagossou/ylint/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ymagossou/ylint.git"
+	 },
+	"homepage": "https://github.com/ymagossou/ylint/blob/main/README.md",
 	"activationEvents": [
-		"onLanguage:c"
+		"onLanguage:c",
+		"onLanguage:cpp"
 	],
 	"languages": [
 		{
@@ -61,6 +78,15 @@
 			],
 			"aliases": [
 				"c"
+			]
+		},
+		{
+			"id": "cpp",
+			"extensions": [
+				".cpp"
+			],
+			"aliases": [
+				"c++"
 			]
 		}
 	]
