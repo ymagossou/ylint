@@ -8,15 +8,11 @@ Simple linter plugin for C/C++ languages
 
 ## Requirements
 
-```
-npm install ylint
-```
-
 ### Supported Static Analyzers
 
 * [Oclint](https://oclint.org/)
 
-The above static code analyzers must be installed on your machine(s).
+This static code analyzer must be installed on your machine(s).
 
 The extension should support any versions of the static code
 analyzer.
@@ -52,10 +48,11 @@ see also [clang.llvm](https://clang.llvm.org/docs/JSONCompilationDatabase.html)
 NOTE:
 1. Compilation database file must be placed on the Workspace directory
 2. To generate compilation database file you can use `bear` or `compiledb` or `compdb`
+
 Example: `bear make` will generate json compilation database
 
 
-
+## Releases
 
 ### 1.0.0
 
