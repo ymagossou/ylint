@@ -3,7 +3,7 @@
 
 ## Features
 
-Simple linter plugin for C/C++ languages
+Simple linter plugin for C/C++ languages using oclint
 
 
 ## Requirements
@@ -20,12 +20,12 @@ analyzer.
 
 ## Extension Settings
 
-This extension contributes the following settings:
+The settings of extension are:
 
 * `ylint.executablePath`: Path to oclint-json-compilation-database executable (default: /usr/local/oclint-json-compilation-database)
-* `ylint.configurationPath`: Path to slim-lint configuration file (default: .ylint)
+* `ylint.configurationPath`: Path to ylint configuration file (default: .ylint)
 
-Configuration file is simple text file where option are passed line by line following this convention:
+Configuration file is simple text file where options are given line by line following this convention:
 `oclint-json-compilation-database [options] -- [oclint_args] [oclint_args] ...`
 
 Example of .ylint file:
@@ -33,7 +33,7 @@ Example of .ylint file:
 ```
 #Options for oclint-json-compilation-database must be placed here
 -e build
---
+-- #This is the separator 
 #Option for oclint must be placed here
 --max-priority-3=100
 --rule=GotoStatement
