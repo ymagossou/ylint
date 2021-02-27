@@ -3,38 +3,73 @@
 
 ## Features
 
+Simple linter plugin for C/C++ languages
+
 
 ## Requirements
+
+```
+npm install ylint
+```
+
+### Supported Static Analyzers
+
+* [Oclint](https://oclint.org/)
+
+The above static code analyzers must be installed on your machine(s).
+
+The extension should support any versions of the static code
+analyzer.
 
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `ylint.executablePath`: Path to oclint-json-compilation-database executable (default: /usr/local/oclint-json-compilation-database)
+* `ylint.configurationPath`: Path to slim-lint configuration file (default: .ylint)
 
-## Known Issues
+Configuration file is simple text file where option are passed line by line following this convention:
+`oclint-json-compilation-database [options] -- [oclint_args] [oclint_args] ...`
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+Example of .ylint file:
 
-## Release Notes
+```
+#Options for oclint-json-compilation-database must be placed here
+-e build
+--
+#Option for oclint must be placed here
+--max-priority-3=100
+--rule=GotoStatement
+--extra-arg=-Wno-error 
+--extra-arg=-I/usr/lib/clang/9.0.1/include 
+```
 
-Users appreciate release notes as you update your extension.
+For more information about JSON compilation database see: [oclint-docs](https://oclint-docs.readthedocs.io/en/v0.6/usage/oclint-json-compilation-database.html)
+ 
+see also [clang.llvm](https://clang.llvm.org/docs/JSONCompilationDatabase.html)
+
+NOTE:
+1. Compilation database file must be placed on the Workspace directory
+2. To generate compilation database file you can use `bear` or `compiledb` or `compdb`
+Example: `bear make` will generate json compilation database
+
+
+
 
 ### 1.0.0
 
-Initial release of ...
+Initial release
 
-### 1.0.1
 
-Fixed issue #.
+## Project details
 
-### 1.1.0
+Both the source code and issue tracker are hosted at
+[GitHub](https://github.com/ymagossou/vscode-ylint).
 
-Added features X, Y, and Z.
+For support purposes, please visit the above URL and select
+from the Issue and/or Pull Request areas.
 
+## License
+
+Licensed under the [MIT License](https://opensource.org/licenses/MIT).
