@@ -17,7 +17,8 @@ import {
   TextDocument,
   workspace,
   Range,
-  Position
+  Position,
+  window
 } from "vscode";
 
 const REGEX = /.+?:(\d+):(\d+):(\W+)(.+)\[(.+)\](.+)/g;
@@ -91,18 +92,18 @@ export default class Linter {
         command = command + line + ' ';
       })
     } else {
-      console.warn(`${configurationPath} path does not exist! ylint extension using default settings`)
+      window.showWarningMessage(`${configurationPath} path does not exist! ylint extension using default settings`)
     }
 
     let child = require('child_process').exec(command);
     child.stdout.on('data', (data: any) => {
 
-      let col = this.parse(data, document);
-      if (col) {
-        this.collection.set(document.uri, col);
+      let diagnostics = this.parse(data, document);
+      if (diagnostics.length > 0) {
+        this.collection.set(document.uri, diagnostics);
       } else
       {
-        console.warn(data);
+        window.showWarningMessage(data);
       }
     });
   }
@@ -119,10 +120,7 @@ export default class Linter {
 
     let match = REGEX.exec(output);
     while (match !== null) {
-      const severity =
-        match[2] === "W"
-          ? DiagnosticSeverity.Warning
-          : DiagnosticSeverity.Error;
+      const severity = DiagnosticSeverity.Error;
       const line = Math.max(Number.parseInt(match[1], 10) - 1, 0);
       const ruleName = match[4] + match[5];
       const message = match[6];
