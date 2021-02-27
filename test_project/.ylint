@@ -1,5 +1,0 @@
---
---max-priority-3=100
---rule=VariableNamingCheck
---extra-arg=-Wno-error 
---extra-arg=-I/usr/lib/clang/9.0.1/include 
