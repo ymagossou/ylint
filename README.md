@@ -62,7 +62,7 @@ Initial release
 ## Project details
 
 Both the source code and issue tracker are hosted at
-[GitHub](https://github.com/ymagossou/vscode-ylint).
+[GitHub](https://github.com/ymagossou/ylint).
 
 For support purposes, please visit the above URL and select
 from the Issue and/or Pull Request areas.
