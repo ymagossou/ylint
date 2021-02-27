@@ -1,35 +1,45 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+/**
+* @file extension.ts
+* @brief Plugin extension file
+* @author magossou
+* @version 1.0.0
+* @date 2021-02-27
+*/
+
 import * as vscode from 'vscode';
 import Linter from "./linter"; 
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+/**
+* @brief This method is called when extension is activated
+* @param vscode.ExtensionContext : Activation context
+*/
 export function activate(context: vscode.ExtensionContext) {
 
-	vscode.window.showInformationMessage('Ylint extension enabled.');
+    vscode.window.showInformationMessage('Ylint extension enabled.');
 
-	const linter = new Linter();
-	context.subscriptions.push(linter);
+    const linter = new Linter();
+    context.subscriptions.push(linter);
 
-	const updateDiagnostics = (document: vscode.TextDocument) => {
-		linter.run(document);
-	};
+    const updateDiagnostics = (document: vscode.TextDocument) => {
+        linter.run(document);
+    };
 
-	context.subscriptions.push(
-		vscode.workspace.onDidCloseTextDocument(document => {
-			linter.clear(document);
-		})
-	);
+    context.subscriptions.push(
+        vscode.workspace.onDidCloseTextDocument(document => {
+            linter.clear(document);
+        })
+    );
 
-	context.subscriptions.push(
-		vscode.workspace.onDidOpenTextDocument(updateDiagnostics)
-	);
-	
-	context.subscriptions.push(
-		vscode.workspace.onDidSaveTextDocument(updateDiagnostics)
-	);
+    context.subscriptions.push(
+        vscode.workspace.onDidOpenTextDocument(updateDiagnostics)
+    );
+
+    context.subscriptions.push(
+        vscode.workspace.onDidSaveTextDocument(updateDiagnostics)
+    );
 }
 
-// this method is called when your extension is deactivated
+/**
+* @brief This method is called when extension is deactivated
+*/
 export function deactivate() {}

@@ -1,3 +1,11 @@
+/**
+* @file linter.ts
+* @brief Manage lint operations
+* @author magossou
+* @version 1.0.0
+* @date 2021-02-27
+*/
+
 import * as execa from "execa";
 import * as fs from "fs";
 import { listeners } from "process";
@@ -14,6 +22,9 @@ import {
 
 const REGEX = /.+?:(\d+):(\d+):(\W+)(.+)\[(.+)\](.+)/g;
 
+/**
+* @brief Class for linter
+*/
 export default class Linter {
   private collection: DiagnosticCollection = languages.createDiagnosticCollection(
     "ylint"
@@ -23,27 +34,31 @@ export default class Linter {
     execa.ExecaChildProcess
   > = new WeakMap();
 
+  
   /**
-   * dispose
-   */
+  * @brief Stop/Dispose the current collection
+  */
   public dispose() {
     this.collection.dispose();
   }
 
+  
   /**
-   * run
-   */
+  * @brief Run the linter
+  */
   public run(document: TextDocument) {
-    if (document.languageId !== "c") {
+    if (document.languageId !== "c" && document.languageId !== "cpp") {
       return;
     }
 
     this.lint(document);
   }
 
+
   /**
-   * clear
-   */
+  * @brief Clear the current collection
+  * @param TextDocument: Current document
+  */
   public clear(document: TextDocument) {
     if (document.uri.scheme === "file") {
       this.collection.delete(document.uri);
@@ -51,6 +66,10 @@ export default class Linter {
   }
 
   
+  /**
+  * @brief Performs lint operation
+  * @param TextDocument : Current document
+  */
   private async lint(document: TextDocument) {
     let workSpace;
 
@@ -77,10 +96,23 @@ export default class Linter {
 
     let child = require('child_process').exec(command);
     child.stdout.on('data', (data: any) => {
-      this.collection.set(document.uri, this.parse(data, document));
-	  });
+
+      let col = this.parse(data, document);
+      if (col) {
+        this.collection.set(document.uri, col);
+      } else
+      {
+        console.warn(data);
+      }
+    });
   }
 
+
+  /**
+  * @brief Parse the output of lint operation
+  * @param string : Lint log message
+  * @param TextDocument : Current document
+  */
   private parse(output: string, document: TextDocument): Diagnostic[] {
 
     const diagnostics = [];
